@@ -1,8 +1,10 @@
 import styles from "./page.module.css";
 import Image from "next/image";
+import { getNewsList } from "./_libs/microcms";
+import { TOP_NEWS_LIMIT } from "./_constants";
 import NewsList from "@/app/_components/NewsList";
 import ButtonLink from "@/app/_components/ButtonLink";
-import { News } from "@/app/_libs/microcms";
+//import { News } from "@/app/_libs/microcms";
 
 /*
 type News = {
@@ -15,7 +17,7 @@ type News = {
   createdAt: string;
 };
 */
-
+/*
 const data: { contents: News[] } = {
   contents: [
     {
@@ -47,9 +49,13 @@ const data: { contents: News[] } = {
     },
   ],
 };
+*/
 
-export default function Home() {
-  const sliceData = data.contents.slice(0, 2);
+export default async function Home() {
+  //const sliceData = data.contents.slice(0, 2);
+  const data = await getNewsList({
+    limit: TOP_NEWS_LIMIT,
+  });
   return (
     <>
       <section className={styles.top}>
@@ -69,7 +75,7 @@ export default function Home() {
       </section>
       <section className={styles.news}>
         <h2 className={styles.newsTitle}>News</h2>
-        <NewsList news={sliceData} />
+        <NewsList news={data.contents} />
         <div className={styles.newsLink}>
           <ButtonLink href="/news">もっとみる</ButtonLink>
         </div>
